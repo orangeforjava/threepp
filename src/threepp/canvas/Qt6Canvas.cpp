@@ -52,6 +52,7 @@ namespace {
             case Qt::Key_F: return Key::F;
             case Qt::Key_G: return Key::G;
             case Qt::Key_H: return Key::H;
+            case Qt::Key_I: return Key::I;
             case Qt::Key_J: return Key::J;
             case Qt::Key_K: return Key::K;
             case Qt::Key_L: return Key::L;
