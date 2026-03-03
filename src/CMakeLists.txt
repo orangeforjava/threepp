@@ -525,6 +525,17 @@ These can be installed on Ubuntu systems via sudo apt install libxinerama-dev li
     endif ()
 endif ()
 
+if (THREEPP_WITH_QT6)
+    set(CMAKE_AUTOMOC ON)
+    list(APPEND publicHeaders
+            "threepp/canvas/Qt6Canvas.hpp"
+    )
+
+    list(APPEND sources
+            "threepp/canvas/Qt6Canvas.cpp"
+    )
+endif ()
+
 if (NOT DEFINED EMSCRIPTEN)
     list(APPEND privateHeaders
             "threepp/utils/LoadGlad.hpp"
@@ -587,6 +598,10 @@ if (NOT DEFINED EMSCRIPTEN)
             target_link_libraries(threepp PRIVATE "-framework Cocoa")
             target_link_libraries(threepp PRIVATE "-framework OpenGL")
         endif ()
+    endif ()
+
+    if (THREEPP_WITH_QT6)
+        target_link_libraries(threepp PUBLIC Qt6::Widgets Qt6::OpenGLWidgets)
     endif ()
 
 endif ()

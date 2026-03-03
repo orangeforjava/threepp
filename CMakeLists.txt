@@ -16,6 +16,8 @@ option(THREEPP_TREAT_WARNINGS_AS_ERRORS "Treat warnings as errors" OFF)
 cmake_dependent_option(THREEPP_WITH_GLFW "Build with GLFW frontend" ON "NOT DEFINED EMSCRIPTEN" ON)
 # Force THREEPP_USE_EXTERNAL_GLFW OFF if NOT THREEPP_WITH_GLFW
 cmake_dependent_option(THREEPP_USE_EXTERNAL_GLFW "Use externally supplied GLFW" OFF "THREEPP_WITH_GLFW" OFF)
+# Qt6 OpenGL backend support (disabled by default, not available on Emscripten)
+cmake_dependent_option(THREEPP_WITH_QT6 "Build with Qt6 OpenGL backend" OFF "NOT DEFINED EMSCRIPTEN" OFF)
 
 cmake_dependent_option(THREEPP_BUILD_EXAMPLE_PROJECTS "Build example projects" ON "THREEPP_BUILD_EXAMPLES" OFF)
 cmake_dependent_option(THREEPP_FETCH_ASSIMP "Make assimp available for examples" OFF "THREEPP_BUILD_EXAMPLES" OFF)
@@ -47,6 +49,10 @@ else ()
 
     if (THREEPP_USE_EXTERNAL_GLFW)
         find_package(glfw3 CONFIG REQUIRED)
+    endif ()
+
+    if (THREEPP_WITH_QT6)
+        find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets)
     endif ()
 
 endif ()
@@ -99,7 +105,7 @@ endif ()
 configure_package_config_file(cmake/config.cmake.in
         "${CMAKE_CURRENT_BINARY_DIR}/threepp-config.cmake"
         INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/threepp"
-        PATH_VARS THREEPP_USE_EXTERNAL_GLFW
+        PATH_VARS THREEPP_USE_EXTERNAL_GLFW THREEPP_WITH_QT6
         NO_SET_AND_CHECK_MACRO)
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/threepp-config-version.cmake"
